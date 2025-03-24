@@ -12,3 +12,39 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model UserSize {
+  id             String   @id @default(uuid())
+  username       String
+  chest_circum   Int
+  body_length    Int
+  waist_circum   Int
+  hip_circum     Int
+  sleeve_length  Int
+  shoulder_width Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Shirt {
+  id        String      @id @default(uuid())
+  model     String
+  detail    String
+  sizes     ShirtSize[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model ShirtSize {
+  id             String   @id @default(uuid())
+  Shirt          Shirt    @relation(fields: [shirtId], references: [id])
+  shirtId        String
+  chest_circum   Int
+  body_length    Int
+  waist_circum   Int
+  hip_circum     Int
+  sleeve_length  Int
+  shoulder_width Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
