@@ -37,7 +37,8 @@ model Shirt {
 
 model ShirtSize {
   id             String   @id @default(uuid())
-  Shirt          Shirt    @relation(fields: [shirtId], references: [id])
+  size           String
+  Shirt          Shirt    @relation(fields: [shirtId], references: [id], onDelete: Cascade)
   shirtId        String
   chest_circum   Int
   body_length    Int
