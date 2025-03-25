@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UserSizeModule } from './user-size/user-size.module';
+import { ShirtModule } from './shirt/shirt.module';
 
 @Module({
   imports: [
@@ -8,6 +9,7 @@ import { UserSizeModule } from './user-size/user-size.module';
       isGlobal: true,
     }),
     UserSizeModule,
+    ShirtModule,
   ],
   controllers: [],
   providers: [],
