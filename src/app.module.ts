@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UserSizeModule } from './user-size/user-size.module';
 import { ShirtModule } from './shirt/shirt.module';
+import { MatchingSizeModule } from './matching-size/matching-size.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ShirtModule } from './shirt/shirt.module';
     }),
     UserSizeModule,
     ShirtModule,
+    MatchingSizeModule,
   ],
   controllers: [],
   providers: [],
