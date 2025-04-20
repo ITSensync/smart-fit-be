@@ -3,21 +3,16 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { ShirtSize, UserSize } from '@prisma/client';
+import { ShirtSize } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
+import { BodyMatchingSizeDto } from './dto/body-matching-size.dto';
 
 @Injectable()
 export class MatchingSizeService {
   constructor(readonly prismaService: PrismaService) {}
 
-  async matching(shirtId: string, userId: string) {
+  async matching(shirtId: string, bodyMathcingSizeDto: BodyMatchingSizeDto) {
     try {
-      const userData = await this.prismaService.userSize.findUnique({
-        where: {
-          id: userId,
-        },
-      });
-
       const shirtData = await this.prismaService.shirt.findUnique({
         where: {
           id: shirtId,
@@ -25,15 +20,15 @@ export class MatchingSizeService {
         include: { sizes: true },
       });
 
-      if (!userData || !shirtData) {
+      if (!shirtData) {
         return {
           status: HttpStatus.NOT_FOUND,
-          message: 'User or Shirt data not found!',
+          message: 'Shirt data not found!',
         };
       }
 
       const resultMatching = this.manualMatchSizeThreshold(
-        userData,
+        bodyMathcingSizeDto,
         shirtData.sizes,
       );
 
@@ -55,7 +50,7 @@ export class MatchingSizeService {
   }
 
   manualMatchSizeThreshold(
-    userSize: UserSize,
+    userSize: BodyMatchingSizeDto,
     shirtSize: ShirtSize[],
     threshold: number = 5,
   ) {
@@ -109,6 +104,7 @@ export class MatchingSizeService {
           console.log(shirt.size);
           console.log(matchPercentage.toFixed(2) + '%');
           return {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             size: shirt.size,
             match_percentage: matchPercentage.toFixed(2) + '%',
             isMatch,
